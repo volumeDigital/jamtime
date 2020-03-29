@@ -1,0 +1,24 @@
+<html>
+
+<script>
+    var ws = new WebSocket("ws://127.0.0.1:8765/");
+    ws.onmessage = function (event) {
+        console.log("got a thing..." + event.data)
+    }
+    var clicko = function () {
+        console.log("click");
+        ws.send("hello");
+    }
+</script>
+
+Great things.
+
+<button
+    type="button"
+    id="send"
+    onclick="clicko()"
+    >Send
+</button>
+
+</html>
+
