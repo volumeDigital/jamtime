@@ -1,24 +1,54 @@
 <html>
 
-<script>
-    var ws = new WebSocket("ws://127.0.0.1:8765/");
-    ws.onmessage = function (event) {
-        console.log("got a thing..." + event.data)
-    }
-    var clicko = function () {
-        console.log("click");
-        ws.send("hello");
-    }
-</script>
+<head>
 
-Great things.
+    <script>
+        var ws = new WebSocket("ws://127.0.0.1:8765/");
 
-<button
-    type="button"
-    id="send"
-    onclick="clicko()"
-    >Send
-</button>
+        ws.onopen = function (event) {
+            ws.send(JSON.stringify({
+                action: "attach"
+                }))
+        }
 
+        ws.onmessage = function (event) {
+            console.log("got a document")
+            console.log(JSON.parse(event.data))
+        }
+
+        var add_fragment = function () {
+            console.log("add_fragment");
+            var frag = {
+                action:     "add_fragment",
+                fragment:   {
+                    pos: 0,
+                    res: document.getElementById("add_url").value
+                }}
+            ws.send(JSON.stringify(frag))
+        }
+
+        var del_fragment = function () {
+            console.log("del_fragment");
+            var frag = {
+                action:     "del_fragment",
+                fragment:   {
+                    pos: 0,
+                    res: document.getElementById("del_url").value
+                }}
+            ws.send(JSON.stringify(frag))
+        }
+    </script>
+
+</head>
+
+<body>
+
+    <input type="text" id="add_url"/>
+    <button onclick="add_fragment()">Add</button><br>
+
+    <input type="text" id="del_url"/>
+    <button onclick="del_fragment()">Del</button><br>
+
+</body>
 </html>
 
